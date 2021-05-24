@@ -1,0 +1,21 @@
+[debug] [2021-05-10T04:33:57.750Z] ----------------------------------------------------------------------
+[debug] [2021-05-10T04:33:57.753Z] Command:       /Users/aofiee/.nvm/versions/node/v15.3.0/bin/node /Users/aofiee/.nvm/versions/node/v15.3.0/bin/firebase emulators:start --only firestore --import firestore_export
+[debug] [2021-05-10T04:33:57.753Z] CLI Version:   9.10.2
+[debug] [2021-05-10T04:33:57.753Z] Platform:      darwin
+[debug] [2021-05-10T04:33:57.753Z] Node Version:  v15.3.0
+[debug] [2021-05-10T04:33:57.754Z] Time:          Mon May 10 2021 11:33:57 GMT+0700 (Indochina Time)
+[debug] [2021-05-10T04:33:57.754Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-05-10T04:33:57.763Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-05-10T04:33:57.763Z] > authorizing via signed-in user (aofiee666@gmail.com)
+[info] i  emulators: Starting emulators: firestore {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: firestore"}}
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[debug] [2021-05-10T04:33:58.077Z] Error: ENOENT: no such file or directory, lstat '/Users/aofiee/Documents/Projects/MindPowerBank/Firebase/functions/firestore_export'
+    at Object.lstatSync (node:fs:1109:3)
+    at findExportMetadata (/Users/aofiee/.nvm/versions/node/v15.3.0/lib/node_modules/firebase-tools/lib/emulator/controller.js:160:32)
+    at Object.startAll (/Users/aofiee/.nvm/versions/node/v15.3.0/lib/node_modules/firebase-tools/lib/emulator/controller.js:233:31)
+    at Command.actionFn (/Users/aofiee/.nvm/versions/node/v15.3.0/lib/node_modules/firebase-tools/lib/commands/emulators-start.js:26:26)
+    at /Users/aofiee/.nvm/versions/node/v15.3.0/lib/node_modules/firebase-tools/lib/command.js:171:25
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[error] 
+[error] Error: An unexpected error has occurred.
