@@ -28,16 +28,6 @@ func HelloHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal("Error ", err)
 	}
-	// settings := SystemSettings{
-	// 	MaintenanceMode: MyMaintenanceMode{
-	// 		IsMaintenance: true,
-	// 	},
-	// }
-	// _, _, err := client.Collection("users").Add(ctx, settings)
-
-	// if err != nil {
-	// 	log.Fatalf("Failed adding alovelace: %v", err)
-	// }
 	dsnap, err := client.Collection("system_settings").Doc("maintenance_mode").Get(ctx)
 	if err != nil {
 		log.Fatal("err", err)
