@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/firestore"
+	"github.com/mitchellh/mapstructure"
 )
 
 type (
@@ -33,7 +34,14 @@ func HelloHTTP(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("err", err)
 	}
 	m := dsnap.Data()
-	log.Printf("Document data: %#v\n", m)
+	log.Println("Doc", m)
+	bs, err := json.Marshal(m)
+	log.Println("JSON", string(bs))
+
+	var sys SystemSettings
+	mapstructure.Decode(m, &sys)
+	log.Println("map to struct", sys)
+
 	var d struct {
 		Name string `json:"name"`
 	}
