@@ -13,20 +13,35 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func SearchAlbums(w http.ResponseWriter, r *http.Request) {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	log.Println(os.Getenv("KEY"))
-	log.Println(os.Getenv("SECRET"))
+var errEnv = godotenv.Load(".env")
 
+func sendJSON(v interface{}, w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusBadRequest)
+	w.Header().Set("Content-Type", "application/json")
+	jsonData, err := json.Marshal(&v)
+	if err != nil {
+		log.Println(err)
+	}
+	w.Write(jsonData)
+}
+func SearchAlbums(w http.ResponseWriter, r *http.Request) {
+	if errEnv != nil {
+		panic(errEnv)
+	}
 	var params struct {
 		Artist string `json:"artist_name"`
 		Track  string `json:"track"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&params); err != nil {
 		log.Fatal(err)
+		return
+	}
+	if params.Artist == "" && params.Track == "" {
+		var msg struct {
+			Msg string `json:"msg"`
+		}
+		msg.Msg = "please input params."
+		sendJSON(&msg, w, r)
 		return
 	}
 	data := getJSON("https://api.discogs.com/database/search?artist=" + params.Artist + "&track=" + params.Track)
@@ -81,6 +96,7 @@ func getJSON(link string) []byte {
 	}
 	req.Header.Add("Authorization", discogs)
 	resp, err := client.Do(req)
+	defer resp.Body.Close()
 	if err != nil {
 		log.Println("error ", err)
 	}
@@ -89,6 +105,5 @@ func getJSON(link string) []byte {
 	} else {
 		return body
 	}
-	defer resp.Body.Close()
 	return []byte{}
 }
