@@ -15,8 +15,9 @@ import (
 
 var errEnv = godotenv.Load(".env")
 
-func sendJSON(v interface{}, w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusBadRequest)
+func sendJSON(v interface{}, w http.ResponseWriter, r *http.Request, status int) {
+	w.WriteHeader(status)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	jsonData, err := json.Marshal(&v)
 	if err != nil {
@@ -41,19 +42,13 @@ func SearchAlbums(w http.ResponseWriter, r *http.Request) {
 			Msg string `json:"msg"`
 		}
 		msg.Msg = "please input params."
-		sendJSON(&msg, w, r)
+		sendJSON(&msg, w, r, http.StatusBadRequest)
 		return
 	}
 	data := getJSON("https://api.discogs.com/database/search?artist=" + params.Artist + "&track=" + params.Track)
 	var result utils.AlbumsJson
 	json.Unmarshal(data, &result)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-	jsonData, err := json.Marshal(showData(&result, w, r))
-	if err != nil {
-		log.Println(err)
-	}
-	w.Write(jsonData)
+	sendJSON(showData(&result, w, r), w, r, http.StatusOK)
 }
 func showData(result *utils.AlbumsJson, w http.ResponseWriter, r *http.Request) []utils.Results {
 	var rs []utils.Results
